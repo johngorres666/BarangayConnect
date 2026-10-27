@@ -1,0 +1,643 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | BarangayConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #243247;
+            min-height: 100vh;
+        }
+
+        /* TOP NAVIGATION */
+        .site-header {
+            background: #123c69;
+            color: white;
+            padding: 16px 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .nav-container {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            color: white;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .top-nav {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .top-nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 11px 13px;
+            border-radius: 7px;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .top-nav a:hover,
+        .top-nav a.active {
+            background: #245784;
+        }
+
+        .top-nav a.logout {
+            color: #ffe0e0;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #123c69;
+            font-size: 28px;
+        }
+
+        .topbar p {
+            color: #64748b;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .staff-label {
+            background: white;
+            border: 1px solid #e1e8f0;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .section-heading {
+            margin-bottom: 16px;
+            color: #123c69;
+            font-size: 19px;
+        }
+
+        .overview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .overview-header .section-heading {
+            margin-bottom: 0;
+        }
+
+        /* STATISTICS CARDS */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .resident-stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .stat-card {
+            background: white;
+            padding: 22px;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            border-top: 4px solid #245784;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(18, 60, 105, 0.08);
+        }
+
+        .stat-card p {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .stat-card h2 {
+            color: #123c69;
+            font-size: 30px;
+            margin-top: 12px;
+        }
+
+        .stat-card.pending {
+            border-top-color: #d69e2e;
+        }
+
+        .stat-card.approved {
+            border-top-color: #2f855a;
+        }
+
+        .stat-card.rejected {
+            border-top-color: #c53030;
+        }
+
+        .stat-card.pending h2 {
+            color: #b7791f;
+        }
+
+        .stat-card.approved h2 {
+            color: #2f855a;
+        }
+
+        .stat-card.rejected h2 {
+            color: #c53030;
+        }
+
+        /* PANELS */
+        .panel {
+            background: white;
+            padding: 24px;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            margin-bottom: 24px;
+        }
+
+        .panel p {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 15px;
+            margin-top: 18px;
+        }
+
+        .quick-link {
+            display: block;
+            padding: 18px;
+            border: 1px solid #dce5ef;
+            border-radius: 9px;
+            text-decoration: none;
+            color: #123c69;
+            font-weight: bold;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .quick-link:hover {
+            background: #f0f6fc;
+            border-color: #9bb8d5;
+        }
+
+        .quick-link span {
+            display: block;
+            font-size: 13px;
+            font-weight: normal;
+            color: #64748b;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* NOTICE AND STATUS MESSAGES */
+        .notice {
+            background: #fff7e6;
+            color: #795315;
+            border: 1px solid #f1dfb5;
+            border-radius: 9px;
+            padding: 15px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .dashboard-message {
+            font-size: 13px;
+            color: #64748b;
+            margin-top: -15px;
+            margin-bottom: 22px;
+        }
+
+        .dashboard-message.error {
+            color: #b91c1c;
+        }
+
+        .refresh-btn {
+            border: 1px solid #cbd5e1;
+            background: white;
+            padding: 9px 12px;
+            border-radius: 7px;
+            cursor: pointer;
+            color: #123c69;
+            font-size: 13px;
+        }
+
+        .refresh-btn:hover {
+            background: #f0f6fc;
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .last-updated {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: -12px;
+            margin-bottom: 24px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* RESPONSIVE LAYOUT */
+        @media (max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .resident-stats {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .quick-links {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 750px) {
+            .site-header {
+                padding: 16px;
+            }
+
+            .nav-container {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .top-nav {
+                width: 100%;
+                gap: 5px;
+            }
+
+            .top-nav a {
+                padding: 9px 10px;
+                font-size: 13px;
+            }
+
+            .main {
+                padding: 20px 15px;
+            }
+
+            .resident-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats,
+            .resident-stats,
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .overview-header {
+                align-items: flex-start;
+            }
+
+            .stat-card {
+                padding: 18px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="site-header">
+        <div class="nav-container">
+
+            <a href="/admin-dashboard.html" class="brand">
+                🏘️ BarangayConnect
+            </a>
+
+            <nav class="top-nav" aria-label="Admin navigation">
+                <a href="/admin-dashboard.html" class="active"
+                   aria-current="page">Dashboard</a>
+
+                <a href="/admin-residents.html">Residents</a>
+
+                <a href="/admin-requests.html">Service Requests</a>
+
+                <a href="/admin-reports.html">Reports</a>
+
+                <a href="/admin-login.html" class="logout">Logout</a>
+
+                <a href="/admin-login.html">Staff Login Page</a>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- DASHBOARD CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p>Overview of barangay operations and services.</p>
+            </div>
+
+            <div class="staff-label">🛡️ Staff Portal</div>
+        </header>
+
+        <div class="notice">
+            <strong>Prototype:</strong>
+            Statistics are retrieved from the BarangayConnect database.
+            Administrator authentication and access controls still need
+            to be implemented.
+        </div>
+
+        <div class="overview-header">
+            <h2 class="section-heading">Operations Overview</h2>
+
+            <button class="refresh-btn" id="refreshStats" type="button">
+                ↻ Refresh
+            </button>
+        </div>
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <p>Registered Residents</p>
+                <h2 id="registeredResidents">—</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Pending Requests</p>
+                <h2 id="pendingRequests">—</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Requests Received Today</p>
+                <h2 id="requestsReceivedToday">—</h2>
+            </div>
+
+            <div class="stat-card">
+                <p>Requests Processed</p>
+                <h2 id="requestsProcessed">—</h2>
+            </div>
+
+        </section>
+
+        <h2 class="section-heading">Resident Status Summary</h2>
+
+        <section class="stats resident-stats">
+
+            <div class="stat-card pending">
+                <p>Pending Residents</p>
+                <h2 id="pendingResidents">—</h2>
+            </div>
+
+            <div class="stat-card approved">
+                <p>Approved Residents</p>
+                <h2 id="approvedResidents">—</h2>
+            </div>
+
+            <div class="stat-card rejected">
+                <p>Rejected Residents</p>
+                <h2 id="rejectedResidents">—</h2>
+            </div>
+
+        </section>
+
+        <p
+            id="dashboardMessage"
+            class="dashboard-message"
+            role="status"
+            aria-live="polite"
+        >Loading dashboard statistics...</p>
+
+        <p class="last-updated" id="lastUpdated">
+            Last updated: Waiting for data...
+        </p>
+
+        <!-- RESIDENT MANAGEMENT -->
+        <section class="panel" id="residents">
+            <h2 class="section-heading">Resident Management</h2>
+
+            <p>
+                Review resident registrations and manage resident records.
+            </p>
+
+            <div class="quick-links">
+                <a class="quick-link" href="/admin-residents.html">
+                    👥 Manage Residents
+                    <span>View, approve, and reject registrations.</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- SERVICE REQUESTS -->
+        <section class="panel" id="requests">
+            <h2 class="section-heading">Service Requests</h2>
+
+            <p>
+                Review clearance and certificate requests, process
+                complaints, and update request statuses.
+            </p>
+
+            <div class="quick-links">
+                <a class="quick-link" href="/admin-requests.html">
+                    📄 Manage Service Requests
+                    <span>Open the service request management page.</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- REPORTS AND QUICK ACCESS -->
+        <section class="panel" id="reports">
+            <h2 class="section-heading">Reports and Quick Access</h2>
+
+            <p>
+                Access resident management, service requests, and reporting.
+            </p>
+
+            <div class="quick-links">
+
+                <a class="quick-link" href="/admin-residents.html">
+                    👥 Residents
+                    <span>Open the resident management area.</span>
+                </a>
+
+                <a class="quick-link" href="/admin-requests.html">
+                    📄 Service Requests
+                    <span>Open the request management area.</span>
+                </a>
+
+                <a class="quick-link" href="/admin-reports.html">
+                    📊 Reports
+                    <span>Open the reporting area.</span>
+                </a>
+
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        BarangayConnect © 2026 | Administration Portal
+    </footer>
+
+    <script>
+        const dashboardMessage =
+            document.getElementById("dashboardMessage");
+
+        const refreshStatsButton =
+            document.getElementById("refreshStats");
+
+        const lastUpdated =
+            document.getElementById("lastUpdated");
+
+        let isLoading = false;
+
+        async function loadDashboardStats() {
+            if (isLoading) return;
+
+            isLoading = true;
+            refreshStatsButton.disabled = true;
+            refreshStatsButton.textContent = "Loading...";
+
+            dashboardMessage.className = "dashboard-message";
+            dashboardMessage.textContent =
+                "Loading dashboard statistics...";
+
+            try {
+                const response = await fetch(
+                    "/api/admin/dashboard-stats",
+                    { cache: "no-store" }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || data.success !== true) {
+                    throw new Error(
+                        data.message ||
+                        "Failed to load dashboard statistics."
+                    );
+                }
+
+                const stats = data.stats;
+
+                const statisticIds = [
+                    "registeredResidents",
+                    "pendingRequests",
+                    "requestsReceivedToday",
+                    "requestsProcessed",
+                    "pendingResidents",
+                    "approvedResidents",
+                    "rejectedResidents"
+                ];
+
+                // Update all seven cards using the API response.
+                for (const id of statisticIds) {
+                    const element = document.getElementById(id);
+
+                    if (element && stats[id] !== undefined) {
+                        element.textContent = stats[id];
+                    } else if (element) {
+                        element.textContent = "0";
+                    }
+                }
+
+                dashboardMessage.className = "dashboard-message";
+                dashboardMessage.textContent =
+                    "Dashboard statistics loaded successfully.";
+
+                lastUpdated.textContent =
+                    "Last updated: " +
+                    new Date().toLocaleString();
+
+            } catch (error) {
+                console.error(
+                    "Dashboard statistics error:",
+                    error
+                );
+
+                dashboardMessage.className =
+                    "dashboard-message error";
+
+                dashboardMessage.textContent =
+                    "Unable to load statistics. Check that the server and database are running.";
+
+            } finally {
+                isLoading = false;
+                refreshStatsButton.disabled = false;
+                refreshStatsButton.textContent = "↻ Refresh";
+            }
+        }
+
+        refreshStatsButton.addEventListener(
+            "click",
+            loadDashboardStats
+        );
+
+        // Load statistics when the dashboard opens.
+        loadDashboardStats();
+
+        // Refresh statistics every 30 seconds.
+        setInterval(loadDashboardStats, 30000);
+    </script>
+
+</body>
+</html>

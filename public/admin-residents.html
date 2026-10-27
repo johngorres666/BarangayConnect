@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Management | BarangayConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #263238;
+        }
+
+        header {
+            background: #123c69;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background: #285987;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 25px;
+        }
+
+        .page-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            color: #123c69;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #667085;
+            margin: 0;
+        }
+
+        .button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .refresh-button {
+            background: #123c69;
+            color: white;
+        }
+
+        .refresh-button:hover {
+            background: #0d2d50;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filters input,
+        .filters select {
+            padding: 12px;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            background: white;
+            font-size: 14px;
+        }
+
+        .filters input {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .filters select {
+            min-width: 180px;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+
+        .table-heading {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-heading h2 {
+            margin: 0;
+            font-size: 19px;
+            color: #123c69;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 15px 18px;
+            text-align: left;
+            border-bottom: 1px solid #eaecf0;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #475467;
+            font-weight: bold;
+        }
+
+        tbody tr:hover {
+            background: #f9fbfd;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .status-pending {
+            background: #fff0c2;
+            color: #8a5b00;
+        }
+
+        .status-approved {
+            background: #d1fadf;
+            color: #067647;
+        }
+
+        .status-rejected {
+            background: #fee4e2;
+            color: #b42318;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .approve-button {
+            background: #15803d;
+            color: white;
+        }
+
+        .reject-button {
+            background: #dc2626;
+            color: white;
+        }
+
+        .approve-button:hover {
+            background: #166534;
+        }
+
+        .reject-button:hover {
+            background: #b91c1c;
+        }
+
+        .no-actions {
+            color: #667085;
+            font-size: 13px;
+        }
+
+        .message {
+            padding: 15px 20px;
+            display: none;
+            font-size: 14px;
+        }
+
+        .message.error {
+            display: block;
+            color: #b42318;
+            background: #fee4e2;
+        }
+
+        .message.success {
+            display: block;
+            color: #067647;
+            background: #d1fadf;
+        }
+
+        .table-footer {
+            padding: 16px 20px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #667085;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 18px;
+            }
+
+            .container {
+                padding: 0 15px;
+                margin-top: 22px;
+            }
+
+            .header-content {
+                align-items: flex-start;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            nav a {
+                padding: 8px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <div class="brand">BarangayConnect Admin</div>
+
+            <nav>
+                <a href="/admin-dashboard.html">Dashboard</a>
+                <a href="/admin-residents.html" class="active">Residents</a>
+                <a href="/admin-requests.html">Service Requests</a>
+                <a href="/admin-reports.html">Reports</a>
+                <a href="/admin-login.html">Logout</a>
+                <a href="/admin-login.html">Staff Login Page</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-heading">
+            <div>
+                <h1>Resident Management</h1>
+                <p class="subtitle">
+                    View, search, and manage resident registration applications.
+                </p>
+            </div>
+
+            <button class="button refresh-button" id="refreshButton">
+                Refresh Residents
+            </button>
+        </div>
+
+        <div class="filters">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by name, ID, or address..."
+            >
+
+            <select id="statusFilter">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+            </select>
+        </div>
+
+        <section class="table-card">
+            <div class="table-heading">
+                <h2>Registered Residents</h2>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Resident ID</th>
+                            <th>Full Name</th>
+                            <th>Address</th>
+                            <th>Date Registered</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="residentsTableBody">
+                        <tr>
+                            <td colspan="6">Loading residents...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-footer" id="residentCount">
+                Loading resident count...
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2026 BarangayConnect. Resident Management System.
+    </footer>
+
+    <script>
+        const API_URL = "/api/residents";
+
+        const tableBody = document.getElementById("residentsTableBody");
+        const searchInput = document.getElementById("searchInput");
+        const statusFilter = document.getElementById("statusFilter");
+        const refreshButton = document.getElementById("refreshButton");
+        const residentCount = document.getElementById("residentCount");
+        const messageBox = document.getElementById("message");
+
+        let residents = [];
+
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = "message " + type;
+
+            setTimeout(() => {
+                messageBox.className = "message";
+                messageBox.textContent = "";
+            }, 4000);
+        }
+
+        function escapeHTML(value) {
+            return String(value ?? "").replace(/[&<>"']/g, character => {
+                const replacements = {
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    '"': "&quot;",
+                    "'": "&#039;"
+                };
+
+                return replacements[character];
+            });
+        }
+
+        function getFullName(resident) {
+            return [
+                resident.first_name,
+                resident.middle_name,
+                resident.surname,
+                resident.suffix
+            ]
+                .filter(part => part && String(part).trim())
+                .join(" ");
+        }
+
+        function getStatus(resident) {
+            return String(
+                resident.registration_status || resident.status || "pending"
+            ).toLowerCase();
+        }
+
+        function formatDate(dateValue) {
+            if (!dateValue) {
+                return "—";
+            }
+
+            const date = new Date(dateValue);
+
+            if (Number.isNaN(date.getTime())) {
+                return "—";
+            }
+
+            return date.toLocaleDateString("en-PH", {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            });
+        }
+
+        function renderResidents() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const selectedStatus = statusFilter.value;
+
+            const filteredResidents = residents.filter(resident => {
+                const fullName = getFullName(resident).toLowerCase();
+                const address = String(resident.address || "").toLowerCase();
+                const residentId = String(resident.resident_id ?? resident.id ?? "")
+                    .toLowerCase();
+                const status = getStatus(resident);
+
+                const matchesSearch =
+                    fullName.includes(searchTerm) ||
+                    address.includes(searchTerm) ||
+                    residentId.includes(searchTerm);
+
+                const matchesStatus =
+                    selectedStatus === "all" || status === selectedStatus;
+
+                return matchesSearch && matchesStatus;
+            });
+
+            if (filteredResidents.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6">No residents found.</td>
+                    </tr>
+                `;
+            } else {
+                tableBody.innerHTML = filteredResidents.map(resident => {
+                    const id = resident.resident_id ?? resident.id;
+                    const status = getStatus(resident);
+                    const name = getFullName(resident) || "Unnamed Resident";
+
+                    let actions = `
+                        <span class="no-actions">No actions available</span>
+                    `;
+
+                    if (status === "pending") {
+                        actions = `
+                            <div class="action-buttons">
+                                <button
+                                    class="button approve-button"
+                                    data-id="${escapeHTML(id)}"
+                                    data-status="approved"
+                                >Approve</button>
+
+                                <button
+                                    class="button reject-button"
+                                    data-id="${escapeHTML(id)}"
+                                    data-status="rejected"
+                                >Reject</button>
+                            </div>
+                        `;
+                    }
+
+                    const statusClass = [
+                        "pending",
+                        "approved",
+                        "rejected"
+                    ].includes(status) ? status : "pending";
+
+                    return `
+                        <tr>
+                            <td>${escapeHTML(id ?? "—")}</td>
+                            <td>${escapeHTML(name)}</td>
+                            <td>${escapeHTML(resident.address || "—")}</td>
+                            <td>${escapeHTML(formatDate(resident.created_at))}</td>
+                            <td>
+                                <span class="status status-${statusClass}">
+                                    ${escapeHTML(status)}
+                                </span>
+                            </td>
+                            <td>${actions}</td>
+                        </tr>
+                    `;
+                }).join("");
+            }
+
+            residentCount.textContent =
+                `Showing ${filteredResidents.length} of ${residents.length} residents`;
+        }
+
+        async function loadResidents() {
+            refreshButton.disabled = true;
+            refreshButton.textContent = "Refreshing...";
+
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (!response.ok || data.success === false) {
+                    throw new Error(data.message || "Unable to load residents.");
+                }
+
+                residents = Array.isArray(data)
+                    ? data
+                    : (data.residents || data.data || []);
+
+                if (!Array.isArray(residents)) {
+                    residents = [];
+                }
+
+                renderResidents();
+            } catch (error) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6">
+                            Could not load residents. Check that your server is running.
+                        </td>
+                    </tr>
+                `;
+
+                residentCount.textContent = "Resident data unavailable.";
+                showMessage(error.message || "Failed to load residents.", "error");
+            } finally {
+                refreshButton.disabled = false;
+                refreshButton.textContent = "Refresh Residents";
+            }
+        }
+
+        async function updateResidentStatus(id, status) {
+            const action = status === "approved" ? "approve" : "reject";
+
+            if (!confirm(`Are you sure you want to ${action} this resident?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    `${API_URL}/${encodeURIComponent(id)}/status`,
+                    {
+                        method: "PATCH",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ status })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || data.success === false) {
+                    throw new Error(
+                        data.message || `Could not ${action} resident.`
+                    );
+                }
+
+                showMessage(`Resident ${status} successfully.`, "success");
+                await loadResidents();
+            } catch (error) {
+                showMessage(
+                    error.message || "Unable to update resident status.",
+                    "error"
+                );
+            }
+        }
+
+        tableBody.addEventListener("click", event => {
+            const button = event.target.closest("button[data-id][data-status]");
+
+            if (!button) {
+                return;
+            }
+
+            updateResidentStatus(
+                button.dataset.id,
+                button.dataset.status
+            );
+        });
+
+        searchInput.addEventListener("input", renderResidents);
+        statusFilter.addEventListener("change", renderResidents);
+        refreshButton.addEventListener("click", loadResidents);
+
+        loadResidents();
+    </script>
+</body>
+</html>

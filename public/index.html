@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarangayConnect | Community Services</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #243247;
+            background: #f4f7fb;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #123c69;
+            color: white;
+            padding: 20px 8%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        .hero {
+            padding: 80px 8%;
+            background: linear-gradient(120deg, #123c69, #2878a8);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            max-width: 650px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin-bottom: 28px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #f5c451;
+            color: #173653;
+            padding: 12px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 55px 8%;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px #142b4610;
+            border: 1px solid #e1e8f0;
+        }
+
+        .service-card h3 {
+            margin-bottom: 10px;
+            color: #123c69;
+        }
+
+        .service-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .notice {
+            margin-top: 35px;
+            padding: 25px;
+            background: #e4eff9;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #102d4c;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 18px 5%;
+            }
+
+            nav {
+                align-items: flex-start;
+            }
+
+            nav a {
+                margin-left: 0;
+                margin-right: 12px;
+            }
+
+            .hero, main {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+        }
+        
+@media (max-width: 600px) {
+    header {
+        padding: 20px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    nav a {
+        margin-right: 0;
+    }
+
+    .hero {
+        padding: 40px 20px;
+    }
+
+    .services {
+        grid-template-columns: 1fr;
+    }
+
+    main {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">BarangayConnect</div>
+
+            <div>
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="/register.html">Register</a>
+                <a href="/login.html">Login</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Your Barangay Services, Made More Accessible.</h1>
+
+        <p>
+            Access community information, learn about available services,
+            and discover how to submit requests to your local barangay.
+        </p>
+
+        <a class="button" href="#services">Explore Services</a>
+    </section>
+
+    <main>
+        <section id="services">
+            <div class="section-heading">
+                <h2>Our Services</h2>
+                <p>Learn about the services available to our residents.</p>
+            </div>
+
+            <div class="services">
+                <article class="service-card">
+                    <div class="service-icon">📄</div>
+                    <h3>Barangay Clearance</h3>
+                    <p>Learn about clearance requirements and application procedures.</p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon">🏠</div>
+                    <h3>Certificate of Residency</h3>
+                    <p>Find information about residency certification.</p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon">📝</div>
+                    <h3>Complaints and Concerns</h3>
+                    <p>Learn how to report community concerns through the barangay.</p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon">📢</div>
+                    <h3>Announcements</h3>
+                    <p>Stay informed about community updates and activities.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="notice" id="about">
+            <h2>About BarangayConnect</h2>
+            <p>
+                BarangayConnect is a community service website concept designed
+                to make barangay information easier to access and help residents
+                understand available local services.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 BarangayConnect | Community Services Portal</p>
+    </footer>
+
+</body>
+</html>

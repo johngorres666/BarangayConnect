@@ -1,0 +1,469 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarangayConnect - Resident Registration</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            margin: 0;
+            padding: 30px 15px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #176b45;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: 2px solid #9bd8b7;
+            border-color: #176b45;
+        }
+
+        input[readonly] {
+            background: #f1f3f5;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 24px;
+            background: #176b45;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #105536;
+        }
+
+        button:disabled {
+            background: #8ba99a;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            display: none;
+            padding: 12px;
+            margin-top: 18px;
+            border-radius: 6px;
+            overflow-wrap: anywhere;
+        }
+
+        .form-message.success {
+            display: block;
+            background: #e4f7eb;
+            color: #176b45;
+        }
+
+        .form-message.error {
+            display: block;
+            background: #fde8e8;
+            color: #a32222;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .container {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>BarangayConnect</h1>
+        <p class="subtitle">Resident Registration Form</p>
+
+        <form id="registrationForm">
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="surname">Surname *</label>
+                    <input
+                        type="text"
+                        id="surname"
+                        name="surname"
+                        maxlength="100"
+                        autocomplete="family-name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        maxlength="100"
+                        autocomplete="given-name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="middleName">Middle Name</label>
+                    <input
+                        type="text"
+                        id="middleName"
+                        name="middleName"
+                        maxlength="100"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="suffix">Suffix</label>
+                    <select id="suffix" name="suffix">
+                        <option value="">None</option>
+                        <option value="Jr.">Jr.</option>
+                        <option value="Sr.">Sr.</option>
+                        <option value="II">II</option>
+                        <option value="III">III</option>
+                        <option value="IV">IV</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="address">Complete Address *</label>
+                    <textarea
+                        id="address"
+                        name="address"
+                        rows="3"
+                        maxlength="500"
+                        autocomplete="street-address"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthday">Date of Birth *</label>
+                    <input
+                        type="date"
+                        id="birthday"
+                        name="birthday"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        readonly
+                        placeholder="Automatically calculated"
+                    >
+                    <span class="note">Calculated from your birthday.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        maxlength="30"
+                        autocomplete="tel"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        maxlength="254"
+                        autocomplete="email"
+                        required
+                    >
+                    <span class="note">Use an email address that is not already registered.</span>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="photo">Profile Picture</label>
+                    <input
+                        type="file"
+                        id="photo"
+                        name="photo"
+                        accept="image/png,image/jpeg,image/webp"
+                    >
+                    <span class="note">
+                        Optional. The picture is not uploaded by this registration endpoint yet.
+                    </span>
+                </div>
+
+            </div>
+
+            <button type="submit" id="submitButton">
+                Register
+            </button>
+
+            <div
+                id="formMessage"
+                class="form-message"
+                role="status"
+                aria-live="polite"
+            ></div>
+        </form>
+    </main>
+
+    <script>
+        const form = document.getElementById("registrationForm");
+        const birthdayInput = document.getElementById("birthday");
+        const ageInput = document.getElementById("age");
+        const submitButton = document.getElementById("submitButton");
+        const formMessage = document.getElementById("formMessage");
+
+        const API_URL =
+            "http://localhost:3000/api/residents/register";
+
+        // Use the local date so the maximum birthday is today.
+        function getLocalDateString() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0");
+            const day = String(now.getDate()).padStart(2, "0");
+
+            return `${year}-${month}-${day}`;
+        }
+
+        birthdayInput.max = getLocalDateString();
+
+        function calculateAge(birthDateValue) {
+            if (!birthDateValue) {
+                return "";
+            }
+
+            const parts = birthDateValue.split("-").map(Number);
+
+            if (parts.length !== 3 || parts.some(Number.isNaN)) {
+                return "";
+            }
+
+            const [year, month, day] = parts;
+            const today = new Date();
+
+            let age = today.getFullYear() - year;
+
+            const birthdayHasNotOccurred =
+                today.getMonth() + 1 < month ||
+                (
+                    today.getMonth() + 1 === month &&
+                    today.getDate() < day
+                );
+
+            if (birthdayHasNotOccurred) {
+                age--;
+            }
+
+            return age;
+        }
+
+        birthdayInput.addEventListener("change", function () {
+            const birthDate = birthdayInput.value;
+
+            if (birthDate && birthDate > getLocalDateString()) {
+                ageInput.value = "";
+                birthdayInput.setCustomValidity(
+                    "Date of birth cannot be in the future."
+                );
+                birthdayInput.reportValidity();
+                return;
+            }
+
+            birthdayInput.setCustomValidity("");
+
+            const age = calculateAge(birthDate);
+            ageInput.value = age === "" ? "" : age;
+        });
+
+        function showMessage(message, type) {
+            formMessage.textContent = message;
+            formMessage.className = "form-message " + type;
+        }
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            formMessage.textContent = "";
+            formMessage.className = "form-message";
+
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            const birthday = birthdayInput.value;
+
+            if (birthday > getLocalDateString()) {
+                showMessage(
+                    "Date of birth cannot be in the future.",
+                    "error"
+                );
+                return;
+            }
+
+            const residentData = {
+                surname: document.getElementById("surname").value.trim(),
+                firstName: document.getElementById("firstName").value.trim(),
+                middleName: document.getElementById("middleName").value.trim(),
+                suffix: document.getElementById("suffix").value,
+                address: document.getElementById("address").value.trim(),
+                birthday: birthday,
+                birth_date: birthday,
+                age: calculateAge(birthday),
+                phone: document.getElementById("phone").value.trim(),
+                email: document.getElementById("email").value.trim().toLowerCase()
+            };
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Registering...";
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "include",
+                    body: JSON.stringify(residentData)
+                });
+
+                const responseText = await response.text();
+                let result;
+
+                try {
+                    result = JSON.parse(responseText);
+                } catch (parseError) {
+                    console.error(
+                        "Invalid server response:",
+                        response.status,
+                        responseText
+                    );
+
+                    throw new Error(
+                        "The server returned an invalid response. " +
+                        "Check that your backend is running."
+                    );
+                }
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message ||
+                        `Registration failed (HTTP ${response.status}).`
+                    );
+                }
+
+                const residentId =
+                    result.resident?.resident_id ??
+                    result.resident_id;
+
+                const status =
+                    result.resident?.registration_status ??
+                    result.registration_status ??
+                    "pending";
+
+                showMessage(
+                    "Registration successful!" +
+                    (residentId ? ` Reference number: ${residentId}.` : "") +
+                    ` Status: ${status}.`,
+                    "success"
+                );
+
+                form.reset();
+                ageInput.value = "";
+
+            } catch (error) {
+                console.error("Registration error:", error);
+
+                showMessage(
+                    error.message ||
+                    "Could not connect to the server. Make sure your backend is running.",
+                    "error"
+                );
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Register";
+            }
+        });
+    </script>
+</body>
+</html>

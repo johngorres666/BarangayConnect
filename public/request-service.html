@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Service | BarangayConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            font-family: Arial, sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: #166534;
+            color: white;
+            padding: 25px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+        }
+
+        .header p {
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .form-card {
+            background: white;
+            padding: 25px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
+        }
+
+        .notice {
+            background: #fff7ed;
+            color: #9a3412;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid #86efac;
+            border-color: #15803d;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 7px;
+            background: #15803d;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #166534;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        #message {
+            display: none;
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 7px;
+            line-height: 1.5;
+        }
+
+        #message.success {
+            display: block;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        #message.error {
+            display: block;
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #166534;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <header class="header">
+            <h1>BarangayConnect</h1>
+            <p>Resident Service Request Form</p>
+        </header>
+
+        <section class="form-card">
+            <h2>Request a Barangay Service</h2>
+            <p>Complete the form below to submit your service request.</p>
+
+            <div class="notice">
+                Prototype only: Use fictional test data. This form does
+                not yet verify a logged-in resident's identity.
+            </div>
+
+            <form id="requestForm">
+                <div class="field">
+                    <label for="resident_id">Resident ID</label>
+                    <input
+                        type="number"
+                        id="resident_id"
+                        name="resident_id"
+                        min="1"
+                        step="1"
+                        placeholder="Enter your test resident ID"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="service_type">Service Type</label>
+                    <select id="service_type" name="service_type" required>
+                        <option value="">Choose a service</option>
+                        <option value="Barangay Clearance">
+                            Barangay Clearance
+                        </option>
+                        <option value="Certificate of Residency">
+                            Certificate of Residency
+                        </option>
+                        <option value="Complaint or Incident">
+                            Complaint or Incident
+                        </option>
+                        <option value="Other services">
+                            Other Services
+                        </option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="description">Request Description</label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        maxlength="2000"
+                        placeholder="Explain what service you need..."
+                        required
+                    ></textarea>
+                </div>
+
+                <button type="submit" id="submitButton">
+                    Submit Request
+                </button>
+            </form>
+
+            <div id="message" role="status" aria-live="polite"></div>
+
+            <a class="back-link" href="index.html">
+                ← Back to Home
+            </a>
+        </section>
+
+        <footer>
+            BarangayConnect · Service Request Prototype
+        </footer>
+    </main>
+
+    <script>
+        const form = document.getElementById("requestForm");
+        const message = document.getElementById("message");
+        const submitButton = document.getElementById("submitButton");
+
+        form.addEventListener("submit", async function (event) {
+            
+            event.preventDefault();
+
+            message.className = "";
+            message.style.display = "none";
+
+            const residentId = Number(
+                document.getElementById("resident_id").value
+            );
+
+            const serviceType =
+                document.getElementById("service_type").value;
+
+            const description =
+                document.getElementById("description").value.trim();
+
+            if (
+                !Number.isSafeInteger(residentId) ||
+                residentId < 1 ||
+                !serviceType ||
+                !description
+            ) {
+                message.textContent =
+                    "Please complete all fields with valid information.";
+                message.className = "error";
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+
+            try {
+                const response = await fetch("http://localhost:3000/api/requests", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        resident_id: residentId,
+                        service_type: serviceType,
+                        description: description
+                    })
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message || "Unable to submit your request."
+                    );
+                }
+
+                message.textContent =
+                    "Request submitted successfully! Request ID: " +
+                    result.request.request_id +
+                    ". Status: " +
+                    result.request.request_status +
+                    ".";
+
+                message.className = "success";
+                form.reset();
+            } catch (error) {
+                message.textContent =
+                    error.message ||
+                    "Could not connect to the server. Please try again.";
+
+                message.className = "error";
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Submit Request";
+            }
+        });
+    </script>
+</body>
+</html>

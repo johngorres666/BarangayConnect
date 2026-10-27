@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Requests | BarangayConnect</title>
+
+  <style>
+    :root {
+      --navy: #123c69;
+      --blue: #2463a6;
+      --bg: #f4f7fb;
+      --text: #243247;
+      --muted: #68778b;
+      --border: #e1e8f0;
+      --shadow: 0 8px 24px rgba(25, 48, 79, .07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .topbar {
+      background: var(--navy);
+      color: white;
+      padding: 18px 4%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 23px;
+      font-weight: 800;
+    }
+
+    .admin-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .admin-nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .admin-nav a:hover,
+    .admin-nav a.active {
+      background: #285987;
+    }
+
+    .container {
+      max-width: 1450px;
+      margin: 28px auto;
+      padding: 0 24px 40px;
+    }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      color: var(--navy);
+    }
+
+    h2 {
+      margin: 0 0 7px;
+      font-size: 20px;
+      color: var(--navy);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .prototype-note {
+      padding: 13px 15px;
+      margin-bottom: 24px;
+      border: 1px solid #f0d7a4;
+      background: #fff8e9;
+      color: #795313;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 21px;
+      box-shadow: var(--shadow);
+      text-align: left;
+      color: var(--text);
+      min-width: 0;
+      transition: transform .15s, border-color .15s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: #9ab7d8;
+    }
+
+    .stat-card.active {
+      outline: 2px solid var(--blue);
+      outline-offset: -2px;
+      background: #f4f8ff;
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stat-icon {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #edf3fb;
+      color: var(--navy);
+      font-size: 18px;
+    }
+
+    .stat-number {
+      display: block;
+      margin-top: 15px;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .panel-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: minmax(200px, 2fr) repeat(2, minmax(160px, 1fr)) auto auto;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .control {
+      width: 100%;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #ccd6e2;
+      border-radius: 8px;
+      color: var(--text);
+      background: white;
+      outline: none;
+    }
+
+    .control:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(36, 99, 166, .12);
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: opacity .15s;
+    }
+
+    .btn:hover {
+      opacity: .86;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: .5;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #eaf0f7;
+      color: var(--navy);
+    }
+
+    .btn-success {
+      background: #e2f5eb;
+      color: #116944;
+    }
+
+    .btn-danger {
+      background: #ffeaeb;
+      color: #a62934;
+    }
+
+    .notice {
+      margin: 18px 24px 0;
+      padding: 12px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .notice:empty {
+      display: none;
+    }
+
+    .notice.info {
+      background: #edf5ff;
+      color: #214f83;
+    }
+
+    .notice.success {
+      background: #e7f7ee;
+      color: #146a43;
+    }
+
+    .notice.error {
+      background: #fff0f0;
+      color: #a12b35;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 950px;
+    }
+
+    th, td {
+      padding: 15px 17px;
+      border-bottom: 1px solid #edf0f5;
+      text-align: left;
+      vertical-align: middle;
+      font-size: 13px;
+    }
+
+    th {
+      background: #f8fafc;
+      color: #56667a;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: .45px;
+      white-space: nowrap;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .description-cell {
+      max-width: 260px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 30px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: capitalize;
+      white-space: nowrap;
+    }
+
+    .status-badge::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-pending {
+      background: #fff3d8;
+      color: #97600b;
+    }
+
+    .status-approved {
+      background: #e3efff;
+      color: #245fa2;
+    }
+
+    .status-rejected {
+      background: #ffeaeb;
+      color: #b22d39;
+    }
+
+    .status-completed {
+      background: #e2f5eb;
+      color: #16754d;
+    }
+
+    .status-unknown {
+      background: #edf0f4;
+      color: #536174;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-width: 175px;
+    }
+
+    .actions .btn {
+      padding: 8px 10px;
+      font-size: 12px;
+    }
+
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--navy);
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .empty-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .panel-footer {
+      padding: 15px 24px;
+      background: #fafbfd;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+      margin-right: 7px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Request details modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(15, 30, 50, .58);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 650px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .25);
+      animation: appear .18s ease-out;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      background: var(--navy);
+      color: white;
+      padding: 22px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .modal-header h2 {
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .modal-header p {
+      margin: 0;
+      font-size: 13px;
+      color: #dbe7f5;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, .12);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, .25);
+      border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      font-size: 22px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .detail-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .detail-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .detail-label {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 9px;
+    }
+
+    .detail-value {
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      background: #fafbfd;
+    }
+
+    @media (max-width: 1050px) {
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar {
+        padding: 18px;
+        align-items: flex-start;
+      }
+
+      .admin-nav {
+        width: 100%;
+      }
+
+      .admin-nav a {
+        padding: 8px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 0 13px 28px;
+        margin-top: 20px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .stats {
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 15px;
+      }
+
+      .stat-number {
+        font-size: 27px;
+      }
+
+      .stat-top {
+        font-size: 11px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+        padding: 16px;
+      }
+
+      .panel-header {
+        padding: 18px 16px;
+      }
+
+      .notice {
+        margin-left: 16px;
+        margin-right: 16px;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .detail-item.full {
+        grid-column: auto;
+      }
+
+      .modal-body {
+        padding: 16px;
+      }
+
+      .modal-header {
+        padding: 18px;
+      }
+
+      .modal-footer {
+        padding: 14px 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">BarangayConnect Admin</div>
+
+    <nav class="admin-nav">
+      <a href="/admin-dashboard.html">Dashboard</a>
+      <a href="/admin-residents.html">Residents</a>
+      <a href="/admin-requests.html" class="active">Service Requests</a>
+      <a href="/admin-reports.html">Reports</a>
+      <a href="/admin-login.html">Logout</a>
+      <a href="/admin-login.html">Staff Login Page</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div class="page-heading">
+      <div>
+        <h1>📄 Service Requests</h1>
+        <p class="subtitle">
+          Review, track, and manage resident service requests.
+        </p>
+      </div>
+
+      <button class="btn btn-primary" id="refreshButton" type="button">
+        ↻ Refresh Requests
+      </button>
+    </div>
+
+    <div class="prototype-note">
+      <strong>Prototype notice:</strong> This page loads requests from PostgreSQL.
+      Administrator authentication and access protection still need to be implemented.
+      Use fictional test data only. Do not use real resident information until proper
+      authentication and security controls are in place.
+    </div>
+
+    <section class="stats" aria-label="Request status summary">
+      <button class="stat-card" type="button" data-status="pending" aria-pressed="false">
+        <span class="stat-top">
+          <span>Pending Requests</span>
+          <span class="stat-icon">◷</span>
+        </span>
+        <span class="stat-number" id="pendingCount">—</span>
+      </button>
+
+      <button class="stat-card" type="button" data-status="approved" aria-pressed="false">
+        <span class="stat-top">
+          <span>Approved Requests</span>
+          <span class="stat-icon">✓</span>
+        </span>
+        <span class="stat-number" id="approvedCount">—</span>
+      </button>
+
+      <button class="stat-card" type="button" data-status="rejected" aria-pressed="false">
+        <span class="stat-top">
+          <span>Rejected Requests</span>
+          <span class="stat-icon">✕</span>
+        </span>
+        <span class="stat-number" id="rejectedCount">—</span>
+      </button>
+
+      <button class="stat-card" type="button" data-status="completed" aria-pressed="false">
+        <span class="stat-top">
+          <span>Completed Requests</span>
+          <span class="stat-icon">✓</span>
+        </span>
+        <span class="stat-number" id="completedCount">—</span>
+      </button>
+    </section>
+
+    <section class="panel">
+      <div class="panel-header">
+        <div>
+          <h2>Request Management</h2>
+          <p>
+            Search records, filter results, inspect details, and update request statuses.
+          </p>
+        </div>
+
+        <button class="btn btn-secondary" type="button" id="clearFiltersButton">
+          ✕ Clear Filters
+        </button>
+      </div>
+
+      <div class="toolbar">
+        <input
+          class="control"
+          id="searchInput"
+          type="search"
+          placeholder="Search request, resident, or description..."
+          aria-label="Search requests"
+        >
+
+        <select class="control" id="serviceFilter" aria-label="Filter by service">
+          <option value="">All services</option>
+          <option value="Barangay Clearance">Barangay Clearance</option>
+          <option value="Certificate of Residency">Certificate of Residency</option>
+          <option value="Complaint or Incident">Complaint or Incident</option>
+          <option value="Other services">Other services</option>
+        </select>
+
+        <select class="control" id="statusFilter" aria-label="Filter by status">
+          <option value="">All statuses</option>
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <button class="btn btn-primary" type="button" id="searchButton">
+          Search
+        </button>
+
+        <button class="btn btn-secondary" type="button" id="resetSearchButton">
+          Reset
+        </button>
+      </div>
+
+      <div class="notice" id="notice" role="status" aria-live="polite"></div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Request ID</th>
+              <th>Resident ID</th>
+              <th>Service Type</th>
+              <th>Description</th>
+              <th>Date Submitted</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody id="requestsTableBody">
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <span class="spinner"></span> Loading service requests...
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel-footer">
+        <span id="resultCount">Loading requests...</span>
+        <span>Data source: PostgreSQL</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Request Details Modal -->
+  <div
+    class="modal-backdrop"
+    id="requestDetailsModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+    aria-hidden="true"
+  >
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle">Request Details</h2>
+          <p>Review the information submitted for this service request.</p>
+        </div>
+
+        <button
+          class="icon-btn"
+          id="closeModalX"
+          type="button"
+          aria-label="Close details"
+        >×</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Request ID</span>
+            <div class="detail-value" id="detailRequestId">—</div>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Resident ID</span>
+            <div class="detail-value" id="detailResidentId">—</div>
+          </div>
+
+          <div class="detail-item full">
+            <span class="detail-label">Service Type</span>
+            <div class="detail-value" id="detailServiceType">—</div>
+          </div>
+
+          <div class="detail-item full">
+            <span class="detail-label">Description</span>
+            <div class="detail-value" id="detailDescription">—</div>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Date Submitted</span>
+            <div class="detail-value" id="detailSubmittedAt">—</div>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Current Status</span>
+            <div class="detail-value" id="detailStatus">—</div>
+          </div>
+
+          <div class="detail-item full">
+            <span class="detail-label">Last Updated</span>
+            <div class="detail-value" id="detailUpdatedAt">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" id="closeModalButton">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    const API_URL = "/api/requests";
+
+    const STATUS_API_URL = (id) =>
+      `/api/requests/${encodeURIComponent(id)}/status`;
+
+    let requests = [];
+    let currentModalRequest = null;
+    let previousFocus = null;
+    let isLoading = false;
+
+    const busyRequestIds = new Set();
+
+    const $ = (id) => document.getElementById(id);
+
+    const body = $("requestsTableBody");
+    const notice = $("notice");
+    const modal = $("requestDetailsModal");
+
+    function textValue(value, fallback = "Not provided") {
+      if (
+        value === null ||
+        value === undefined ||
+        String(value).trim() === ""
+      ) {
+        return fallback;
+      }
+
+      return String(value);
+    }
+
+    function normalizeStatus(status) {
+      return String(status || "").trim().toLowerCase();
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "Not provided";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return String(value);
+      }
+
+      return date.toLocaleString(undefined, {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+    function setNotice(message, type = "info") {
+      notice.textContent = message || "";
+      notice.className = message ? `notice ${type}` : "notice";
+    }
+
+    function setLoading(loading) {
+      isLoading = loading;
+      $("refreshButton").disabled = loading;
+
+      $("refreshButton").innerHTML = loading
+        ? '<span class="spinner"></span> Loading...'
+        : "↻ Refresh Requests";
+    }
+
+    function makeButton(label, className, onClick, disabled = false) {
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = `btn ${className}`;
+      button.textContent = label;
+      button.disabled = disabled;
+
+      button.addEventListener("click", onClick);
+
+      return button;
+    }
+
+    function makeStatusBadge(status) {
+      const badge = document.createElement("span");
+      const normalized = normalizeStatus(status);
+
+      const allowed = [
+        "pending",
+        "approved",
+        "rejected",
+        "completed"
+      ];
+
+      badge.className = `status-badge ${
+        allowed.includes(normalized)
+          ? `status-${normalized}`
+          : "status-unknown"
+      }`;
+
+      badge.textContent = textValue(status, "Unknown");
+
+      return badge;
+    }
+
+    function updateSummary() {
+      const counts = {
+        pending: 0,
+        approved: 0,
+        rejected: 0,
+        completed: 0
+      };
+
+      requests.forEach((request) => {
+        const status = normalizeStatus(request.request_status);
+
+        if (Object.prototype.hasOwnProperty.call(counts, status)) {
+          counts[status]++;
+        }
+      });
+
+      $("pendingCount").textContent = counts.pending;
+      $("approvedCount").textContent = counts.approved;
+      $("rejectedCount").textContent = counts.rejected;
+      $("completedCount").textContent = counts.completed;
+    }
+
+    function getFilteredRequests() {
+      const query = $("searchInput").value.trim().toLowerCase();
+      const service = $("serviceFilter").value;
+      const status = $("statusFilter").value;
+
+      return requests.filter((request) => {
+        const searchableText = [
+          request.request_id,
+          request.resident_id,
+          request.service_type,
+          request.description,
+          request.request_status
+        ]
+          .map((value) => String(value ?? ""))
+          .join(" ")
+          .toLowerCase();
+
+        const matchesSearch =
+          !query || searchableText.includes(query);
+
+        const matchesService =
+          !service || request.service_type === service;
+
+        const matchesStatus =
+          !status || normalizeStatus(request.request_status) === status;
+
+        return matchesSearch && matchesService && matchesStatus;
+      });
+    }
+
+    function renderRequests() {
+      updateSummary();
+
+      const filtered = getFilteredRequests();
+
+      body.replaceChildren();
+
+      if (filtered.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 7;
+
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+
+        const icon = document.createElement("div");
+        icon.className = "empty-icon";
+        icon.textContent = requests.length === 0 ? "📄" : "🔎";
+
+        const heading = document.createElement("strong");
+        heading.textContent = requests.length === 0
+          ? "No service requests yet"
+          : "No matching requests";
+
+        const message = document.createElement("div");
+        message.textContent = requests.length === 0
+          ? "New resident service requests will appear here."
+          : "Try changing your search term or clearing the filters.";
+
+        empty.append(icon, heading, message);
+        cell.appendChild(empty);
+        row.appendChild(cell);
+        body.appendChild(row);
+      } else {
+        filtered.forEach((request) => {
+          const row = document.createElement("tr");
+
+          const requestIdCell = document.createElement("td");
+          requestIdCell.textContent =
+            textValue(request.request_id, "—");
+
+          const residentIdCell = document.createElement("td");
+          residentIdCell.textContent =
+            textValue(request.resident_id, "—");
+
+          const serviceCell = document.createElement("td");
+          serviceCell.textContent =
+            textValue(request.service_type);
+
+          const descriptionCell = document.createElement("td");
+          descriptionCell.className = "description-cell";
+          descriptionCell.textContent =
+            textValue(request.description);
+
+          const dateCell = document.createElement("td");
+          dateCell.textContent = formatDate(request.submitted_at);
+
+          const statusCell = document.createElement("td");
+          statusCell.appendChild(
+            makeStatusBadge(request.request_status)
+          );
+
+          const actionsCell = document.createElement("td");
+          const actions = document.createElement("div");
+
+          actions.className = "actions";
+
+          actions.appendChild(
+            makeButton(
+              "View Details",
+              "btn-secondary",
+              () => openRequestDetails(request)
+            )
+          );
+
+          const status = normalizeStatus(request.request_status);
+          const isBusy = busyRequestIds.has(
+            String(request.request_id)
+          );
+
+          if (status === "pending") {
+            actions.appendChild(
+              makeButton(
+                "Approve",
+                "btn-success",
+                () => updateRequestStatus(request, "approved"),
+                isBusy
+              )
+            );
+
+            actions.appendChild(
+              makeButton(
+                "Reject",
+                "btn-danger",
+                () => updateRequestStatus(request, "rejected"),
+                isBusy
+              )
+            );
+          } else if (status === "approved") {
+            actions.appendChild(
+              makeButton(
+                "Complete",
+                "btn-primary",
+                () => updateRequestStatus(request, "completed"),
+                isBusy
+              )
+            );
+          }
+
+          actionsCell.appendChild(actions);
+
+          row.append(
+            requestIdCell,
+            residentIdCell,
+            serviceCell,
+            descriptionCell,
+            dateCell,
+            statusCell,
+            actionsCell
+          );
+
+          body.appendChild(row);
+        });
+      }
+
+      $("resultCount").textContent =
+        `Showing ${filtered.length} of ${requests.length} request(s)`;
+
+      document.querySelectorAll(".stat-card").forEach((card) => {
+        const active =
+          $("statusFilter").value === card.dataset.status;
+
+        card.classList.toggle("active", active);
+        card.setAttribute("aria-pressed", String(active));
+      });
+    }
+
+    async function loadRequests(showMessage = true) {
+      if (isLoading) {
+        return;
+      }
+
+      setLoading(true);
+
+      if (showMessage) {
+        setNotice("Loading requests from the database...", "info");
+      }
+
+      try {
+        const response = await fetch(API_URL, {
+          headers: {
+            "Accept": "application/json"
+          },
+          cache: "no-store"
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            `Server returned HTTP ${response.status}.`
+          );
+        }
+
+        const data = await response.json();
+
+        if (
+          !data ||
+          data.success !== true ||
+          !Array.isArray(data.requests)
+        ) {
+          throw new Error(
+            data?.message ||
+            "The server returned an unexpected response."
+          );
+        }
+
+        requests = data.requests;
+
+        renderRequests();
+
+        setNotice(
+          `Successfully loaded ${requests.length} request(s) from PostgreSQL.`,
+          "success"
+        );
+      } catch (error) {
+        console.error(
+          "Failed to load service requests:",
+          error
+        );
+
+        setNotice(
+          `Unable to load requests. ${error.message} Check that the server is running and the API is available.`,
+          "error"
+        );
+
+        body.replaceChildren();
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 7;
+
+        const empty = document.createElement("div");
+        empty.className = "empty-state";
+
+        const heading = document.createElement("strong");
+        heading.textContent = "Unable to load service requests";
+
+        const message = document.createElement("div");
+        message.textContent =
+          "Check your Node.js server and database connection, then refresh.";
+
+        empty.append(heading, message);
+        cell.appendChild(empty);
+        row.appendChild(cell);
+        body.appendChild(row);
+
+        $("resultCount").textContent =
+          "Requests could not be loaded";
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function updateRequestStatus(request, newStatus) {
+      const id = request.request_id;
+      const currentStatus = normalizeStatus(
+        request.request_status
+      );
+
+      const allowedTransitions = {
+        pending: ["approved", "rejected"],
+        approved: ["completed"],
+        rejected: [],
+        completed: []
+      };
+
+      if (!allowedTransitions[currentStatus]?.includes(newStatus)) {
+        setNotice(
+          "This status change is not allowed from the current status.",
+          "error"
+        );
+
+        return;
+      }
+
+      const actionNames = {
+        approved: "approve",
+        rejected: "reject",
+        completed: "mark as completed"
+      };
+
+      const confirmed = window.confirm(
+        `Are you sure you want to ${actionNames[newStatus]} request #${id}?`
+      );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const key = String(id);
+
+      if (busyRequestIds.has(key)) {
+        return;
+      }
+
+      busyRequestIds.add(key);
+
+      renderRequests();
+
+      setNotice(`Updating request #${id}...`, "info");
+
+      try {
+        const response = await fetch(STATUS_API_URL(id), {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            status: newStatus
+          })
+        });
+
+        let data = {};
+
+        try {
+          data = await response.json();
+        } catch {
+          // The server may return an empty response.
+        }
+
+        if (!response.ok || data.success === false) {
+          throw new Error(
+            data.message ||
+            `The server returned HTTP ${response.status}.`
+          );
+        }
+
+        setNotice(
+          `Request #${id} was updated. Refreshing the request list...`,
+          "success"
+        );
+
+        // Reload the saved data from the server.
+        await loadRequests(false);
+
+        setNotice(
+          `Request #${id} updated successfully.`,
+          "success"
+        );
+
+        if (
+          currentModalRequest &&
+          String(currentModalRequest.request_id) === key
+        ) {
+          const updatedRequest = requests.find(
+            (item) => String(item.request_id) === key
+          );
+
+          if (updatedRequest) {
+            openRequestDetails(updatedRequest, false);
+          }
+        }
+      } catch (error) {
+        console.error(
+          "Failed to update request status:",
+          error
+        );
+
+        setNotice(
+          `Could not update request #${id}. ${error.message}`,
+          "error"
+        );
+      } finally {
+        busyRequestIds.delete(key);
+        renderRequests();
+      }
+    }
+
+    function setDetail(id, value) {
+      $(id).textContent = value;
+    }
+
+    function openRequestDetails(request, updateFocus = true) {
+      if (updateFocus) {
+        previousFocus = document.activeElement;
+      }
+
+      currentModalRequest = request;
+
+      setDetail(
+        "detailRequestId",
+        textValue(request.request_id, "—")
+      );
+
+      setDetail(
+        "detailResidentId",
+        textValue(request.resident_id, "—")
+      );
+
+      setDetail(
+        "detailServiceType",
+        textValue(request.service_type)
+      );
+
+      setDetail(
+        "detailDescription",
+        textValue(request.description)
+      );
+
+      setDetail(
+        "detailSubmittedAt",
+        formatDate(request.submitted_at)
+      );
+
+      setDetail(
+        "detailUpdatedAt",
+        formatDate(request.updated_at)
+      );
+
+      const statusContainer = $("detailStatus");
+
+      statusContainer.replaceChildren();
+
+      statusContainer.appendChild(
+        makeStatusBadge(request.request_status)
+      );
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+
+      $("closeModalX").focus();
+    }
+
+    function closeRequestDetails() {
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+
+      currentModalRequest = null;
+
+      if (
+        previousFocus &&
+        typeof previousFocus.focus === "function"
+      ) {
+        previousFocus.focus();
+      }
+    }
+
+    function clearFilters() {
+      $("searchInput").value = "";
+      $("serviceFilter").value = "";
+      $("statusFilter").value = "";
+
+      renderRequests();
+
+      setNotice(
+        "All search and status filters have been cleared.",
+        "info"
+      );
+    }
+
+    // Button events
+    $("refreshButton").addEventListener("click", () => {
+      loadRequests(true);
+    });
+
+    $("searchButton").addEventListener("click", renderRequests);
+
+    $("resetSearchButton").addEventListener(
+      "click",
+      clearFilters
+    );
+
+    $("clearFiltersButton").addEventListener(
+      "click",
+      clearFilters
+    );
+
+    // Filter events
+    $("searchInput").addEventListener(
+      "input",
+      renderRequests
+    );
+
+    $("serviceFilter").addEventListener(
+      "change",
+      renderRequests
+    );
+
+    $("statusFilter").addEventListener(
+      "change",
+      renderRequests
+    );
+
+    // Click a statistic card to filter by status
+    document.querySelectorAll(".stat-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const selectedStatus = card.dataset.status;
+
+        $("statusFilter").value =
+          $("statusFilter").value === selectedStatus
+            ? ""
+            : selectedStatus;
+
+        renderRequests();
+      });
+    });
+
+    // Modal events
+    $("closeModalButton").addEventListener(
+      "click",
+      closeRequestDetails
+    );
+
+    $("closeModalX").addEventListener(
+      "click",
+      closeRequestDetails
+    );
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        closeRequestDetails();
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        modal.classList.contains("open")
+      ) {
+        closeRequestDetails();
+      }
+    });
+
+    // Load requests when the page opens
+    loadRequests();
+  </script>
+</body>
+</html>

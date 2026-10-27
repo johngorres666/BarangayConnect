@@ -1,0 +1,185 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resident Login | BarangayConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #243247;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            background: white;
+            padding: 35px;
+            border: 1px solid #e1e8f0;
+            border-radius: 14px;
+            box-shadow: 0 8px 28px #142b4612;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #123c69;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #9bc5ed;
+            border-color: #2878a8;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 7px;
+            background: #123c69;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background: #1c568b;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 14px;
+            line-height: 2;
+        }
+
+        a {
+            color: #175b91;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .notice {
+            background: #eaf3fb;
+            padding: 12px;
+            border-radius: 7px;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #38536d;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="login-card">
+        <div class="logo">🏘️</div>
+
+        <h1>Welcome Back!</h1>
+        <p class="subtitle">Sign in to BarangayConnect</p>
+
+        <form id="loginForm">
+            <div class="field">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    autocomplete="username"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                    required
+                >
+            </div>
+
+            <button class="login-button" type="submit">
+                Sign In
+            </button>
+        </form>
+
+        <div class="links">
+            <p>Don't have an account?
+                <a href="/register.html">Register here</a>
+            </p>
+            <p><a href="/">← Back to Homepage</a></p>
+        </div>
+
+        <div class="notice">
+            This is a demonstration page. Login authentication is not
+            implemented yet. Do not enter a real password.
+        </div>
+    </main>
+
+    <script>
+        document.getElementById("loginForm").addEventListener(
+            "submit",
+            function (event) {
+                event.preventDefault();
+
+                alert(
+                    "Login authentication will be implemented in a later step."
+                );
+            }
+        );
+    </script>
+</body>
+</html>
