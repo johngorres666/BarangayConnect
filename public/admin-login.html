@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login | BarangayConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #243247;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            width: 100%;
+            max-width: 430px;
+            padding: 32px;
+            border-radius: 14px;
+            border: 1px solid #dce5ef;
+            box-shadow: 0 8px 28px #142b4612;
+        }
+
+        .icon {
+            text-align: center;
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #123c69;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: 2px solid #9bc5ed;
+            border-color: #2878a8;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #123c69;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1c568b;
+        }
+
+        .notice {
+            background: #eaf3fb;
+            color: #38536d;
+            padding: 12px;
+            margin-top: 20px;
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        a {
+            color: #175b91;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="card">
+        <div class="icon">🛡️</div>
+
+        <h1>Staff Portal</h1>
+        <p class="subtitle">BarangayConnect Administration</p>
+
+        <form id="adminLoginForm">
+            <label for="email">Staff Email</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="username"
+                placeholder="Enter your staff email"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                autocomplete="current-password"
+                placeholder="Enter your password"
+                required
+            >
+
+            <button type="submit">Staff Sign In</button>
+        </form>
+
+        <div class="notice">
+            Demonstration only. Staff authentication and access permissions
+            have not been implemented. Do not enter real passwords.
+        </div>
+
+        <p class="back">
+            <a href="/">← Back to Homepage</a>
+        </p>
+    </main>
+
+
+<script>
+    document.getElementById("adminLoginForm").addEventListener(
+        "submit",
+        async function (event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const button = this.querySelector("button[type='submit']");
+
+            button.disabled = true;
+            button.textContent = "Signing in...";
+
+            try {
+                const response = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "same-origin",
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    alert(data.message || "Login failed.");
+                    return;
+                }
+
+                alert("Welcome, " + data.staff.full_name + "!");
+
+                window.location.href = "/admin-dashboard.html";
+            } catch (error) {
+                alert(
+                    "Unable to connect to the server. Please check that BarangayConnect is running."
+                );
+            } finally {
+                button.disabled = false;
+                button.textContent = "Staff Sign In";
+            }
+        }
+    );
+</script>
+
+</body>
+</html>

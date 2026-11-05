@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Request | BarangayConnect</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #243247;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #123c69;
+            color: white;
+            padding: 20px 8%;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 45px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e1e8f0;
+        }
+
+        h1 {
+            color: #123c69;
+            margin-bottom: 10px;
+        }
+
+        .intro {
+            margin-bottom: 25px;
+            color: #596579;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccd5e0;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 13px 22px;
+            background: #123c69;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2878a8;
+        }
+
+        .note {
+            margin-top: 18px;
+            padding: 12px;
+            background: #e4eff9;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 20px 12px;
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="/">← BarangayConnect</a>
+    </header>
+
+    <main class="container">
+
+        <h1>Submit a Service Request</h1>
+
+        <p class="intro">
+            Use this form to request barangay services or report
+            community concerns.
+        </p>
+
+        <form id="requestForm">
+
+            <label for="fullName">Full Name *</label>
+            <input
+                type="text"
+                id="fullName"
+                name="full_name"
+                placeholder="Enter your registered full name"
+                required
+            >
+
+            <label for="serviceType">Type of Service *</label>
+            <select id="serviceType" name="service_type" required>
+                <option value="">Select a service</option>
+                <option value="Barangay Clearance">Barangay Clearance</option>
+                <option value="Certificate of Residency">Certificate of Residency</option>
+                <option value="Complaint">Complaint or Concern</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="description">Description *</label>
+            <textarea
+                id="description"
+                name="description"
+                placeholder="Describe your request or concern..."
+                required
+            ></textarea>
+
+            <button type="submit">Submit Request</button>
+
+        </form>
+
+        <div class="note">
+            Only residents with approved registrations can submit
+            service requests. Enter your name exactly as it appears
+            in your registration.
+        </div>
+
+    </main>
+
+    <script>
+        const requestForm = document.getElementById("requestForm");
+
+        requestForm.addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const requestData = {
+                full_name: document.getElementById("fullName").value.trim(),
+                service_type: document.getElementById("serviceType").value,
+                description: document.getElementById("description").value.trim()
+            };
+
+            try {
+                const response = await fetch("/api/requests", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert(data.message || "Request submission failed.");
+                    return;
+                }
+
+                alert(
+                    "Request submitted successfully!\nReference Number: " +
+                    data.request.request_id
+                );
+
+                requestForm.reset();
+
+            } catch (error) {
+                console.error(error);
+                alert("Unable to submit your request. Please try again.");
+            }
+        });
+    </script>
+
+</body>
+</html>

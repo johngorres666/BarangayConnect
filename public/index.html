@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BarangayConnect | Community Services</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #243247;
+            background: #f4f7fb;
+            line-height: 1.6;
+        }
+
+        header {
+            background: #123c69;
+            color: white;
+            padding: 20px 8%;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .hero {
+            padding: 80px 8%;
+            background: linear-gradient(120deg, #123c69, #2878a8);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            max-width: 650px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 600px;
+            margin-bottom: 28px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #f5c451;
+            color: #173653;
+            padding: 12px 22px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #e9b638;
+        }
+
+        main {
+            padding: 55px 8%;
+        }
+
+        section {
+            margin-bottom: 45px;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .service-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px #142b4610;
+            border: 1px solid #e1e8f0;
+        }
+
+        .service-card h3 {
+            margin-bottom: 10px;
+            color: #123c69;
+        }
+
+        .service-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .clickable-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .clickable-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px #142b4620;
+        }
+
+        .notice {
+            padding: 25px;
+            background: #e4eff9;
+            border-radius: 10px;
+        }
+
+        footer {
+            background: #102d4c;
+            color: white;
+            text-align: center;
+            padding: 22px;
+        }
+
+        /* Modal Styles */
+
+        dialog {
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            margin: auto;
+            padding: 30px;
+            border: none;
+            border-radius: 12px;
+            color: #243247;
+            overflow-y: auto;
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .close-activity {
+            background: #123c69;
+            color: white;
+            border: none;
+            padding: 8px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .close-activity:hover {
+            background: #2878a8;
+        }
+
+        .activity-item {
+            background: #f4f7fb;
+            padding: 18px;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        .activity-item h3 {
+            color: #123c69;
+            margin-bottom: 5px;
+        }
+
+        .activity-category {
+            color: #2878a8;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .activity-image {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            nav {
+                align-items: flex-start;
+            }
+
+            nav a {
+                margin-left: 0;
+                margin-right: 12px;
+            }
+
+            .hero {
+                padding: 40px 20px;
+            }
+
+            main {
+                padding: 35px 15px;
+            }
+
+            .services {
+                grid-template-columns: 1fr;
+            }
+
+            .hero .button {
+                margin-bottom: 10px;
+            }
+
+            dialog {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">BarangayConnect</div>
+
+            <div>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#activities">Activities</a>
+                <a href="#announcements">Announcements</a>
+                <a href="#services">Services</a>
+                <a href="/register.html">Register</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Home Section -->
+
+    <section class="hero" id="home">
+        <h1>Your Barangay Services, Made More Accessible.</h1>
+
+        <p>
+            Access community information, learn about available services,
+            and discover how to submit requests to your local barangay.
+        </p>
+
+        <a class="button" href="#services">Explore Services</a>
+
+        <a class="button" href="/service-request.html">
+            Submit a Service Request
+        </a>
+    </section>
+
+    <main>
+
+        <!-- Services Section -->
+
+        <section id="services">
+            <div class="section-heading">
+                <h2>Our Services</h2>
+                <p>Learn about the services available to our residents.</p>
+            </div>
+
+            <div class="services">
+
+                <article class="service-card">
+                    <div class="service-icon">📄</div>
+                    <h3>Barangay Clearance</h3>
+                    <p>
+                        Learn about clearance requirements and
+                        application procedures.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon">🏠</div>
+                    <h3>Certificate of Residency</h3>
+                    <p>
+                        Find information about residency certification.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon">📝</div>
+                    <h3>Complaints and Concerns</h3>
+                    <p>
+                        Learn how to report community concerns
+                        through the barangay.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <div class="service-icon">📢</div>
+                    <h3>Other Services</h3>
+                    <p>
+                        Discover other services and assistance
+                        available to residents.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Activities and Accomplishments Section -->
+
+        <section id="activities">
+            <div class="section-heading">
+                <h2>Activities and Accomplishments</h2>
+                <p>
+                    Discover the programs, projects, and achievements
+                    of our community.
+                </p>
+            </div>
+
+            <button class="button" type="button" onclick="openActivities()">
+                View Activities and Accomplishments
+            </button>
+        </section>
+
+        <!-- Announcements Section -->
+
+        <section id="announcements">
+            <div class="section-heading">
+                <h2>Latest Announcements</h2>
+                <p>
+                    Stay updated with important news and notices
+                    from the barangay.
+                </p>
+            </div>
+
+            <div class="services">
+
+                <article class="service-card clickable-card"
+                         onclick="openAnnouncement('community')">
+
+                    <h3>Community Announcements</h3>
+                    <p>
+                        Important announcements and reminders
+                        for all residents will be posted here.
+                    </p>
+                    <p style="margin-top: 12px; color: #2878a8; font-weight: bold;">
+                        Click to view announcements →
+                    </p>
+                </article>
+
+                <article class="service-card clickable-card"
+                         onclick="openAnnouncement('upcoming')">
+
+                    <h3>Upcoming Activities</h3>
+                    <p>
+                        Information about upcoming barangay programs,
+                        events, and activities.
+                    </p>
+                    <p style="margin-top: 12px; color: #2878a8; font-weight: bold;">
+                        Click to view activities →
+                    </p>
+                </article>
+
+                <article class="service-card clickable-card"
+                         onclick="openAnnouncement('notices')">
+
+                    <h3>Public Notices</h3>
+                    <p>
+                        Read important public notices and updates
+                        from the barangay.
+                    </p>
+                    <p style="margin-top: 12px; color: #2878a8; font-weight: bold;">
+                        Click to view notices →
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- About Section -->
+
+        <section class="notice" id="about">
+            <h2>About Our Barangay</h2>
+
+            <p>
+                Welcome to our barangay community website. This platform
+                provides residents with accessible information about
+                local services, community activities, accomplishments,
+                and important announcements.
+            </p>
+
+            <p style="margin-top: 12px;">
+                Our goal is to keep residents informed and make barangay
+                services easier to access through BarangayConnect.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- Activities and Accomplishments Pop-up -->
+
+    <dialog id="activitiesModal">
+
+        <div class="modal-header">
+            <h2>Activities and Accomplishments</h2>
+
+            <button class="close-activity"
+                    type="button"
+                    onclick="closeActivities()">
+                X
+            </button>
+        </div>
+
+        <p>
+            Here are some sample community activities
+            and accomplishments.
+        </p>
+
+        <h3 style="margin-top: 25px; color: #123c69;">
+            Weekly Activities
+        </h3>
+
+        <article class="activity-item">
+            <img
+                src="/images/image_870x_67a20bb838859.jpg"
+                alt="Community Clean-Up Drive"
+                class="activity-image"
+            >
+
+            <h3>Community Clean-Up Drive</h3>
+            <p class="activity-category">Weekly Activity</p>
+            <p>
+                Residents participated in a community clean-up
+                to maintain cleanliness in public areas.
+            </p>
+        </article>
+
+        <article class="activity-item">
+            <h3>Community Health Program</h3>
+            <p class="activity-category">Weekly Activity</p>
+            <p>
+                A community health program was conducted to promote
+                health awareness among residents.
+            </p>
+        </article>
+
+        <h3 style="margin-top: 25px; color: #123c69;">
+            Monthly Activities
+        </h3>
+
+        <article class="activity-item">
+            <h3>Monthly Community Meeting</h3>
+            <p class="activity-category">Monthly Activity</p>
+            <p>
+                Barangay officials and residents gathered to discuss
+                community concerns and upcoming programs.
+            </p>
+        </article>
+
+        <article class="activity-item">
+            <h3>Livelihood Awareness Program</h3>
+            <p class="activity-category">Monthly Activity</p>
+            <p>
+                A program was organized to introduce livelihood
+                opportunities and skills development.
+            </p>
+        </article>
+
+        <h3 style="margin-top: 25px; color: #123c69;">
+            Yearly Accomplishments
+        </h3>
+
+        <article class="activity-item">
+            <h3>Annual Community Development Program</h3>
+            <p class="activity-category">Yearly Accomplishment</p>
+            <p>
+                The barangay successfully conducted several community
+                development activities throughout the year.
+            </p>
+        </article>
+
+        <article class="activity-item">
+            <h3>Improved Community Facilities</h3>
+            <p class="activity-category">Yearly Accomplishment</p>
+            <p>
+                Improvements were made to selected public facilities
+                to provide better services to residents.
+            </p>
+        </article>
+
+    </dialog>
+
+    <!-- Announcements Pop-up -->
+
+    <dialog id="announcementModal">
+
+        <div class="modal-header">
+            <h2 id="announcementTitle">Announcements</h2>
+
+            <button class="close-activity"
+                    type="button"
+                    onclick="closeAnnouncement()">
+                X
+            </button>
+        </div>
+
+        <div id="announcementContent"></div>
+
+    </dialog>
+
+    <footer>
+        <p>&copy; 2026 BarangayConnect | Community Services Portal</p>
+    </footer>
+
+    <script>
+
+        // Open Activities Pop-up
+
+        function openActivities() {
+            document.getElementById("activitiesModal").showModal();
+        }
+
+        // Close Activities Pop-up
+
+        function closeActivities() {
+            document.getElementById("activitiesModal").close();
+        }
+
+        // Open Announcement Pop-ups
+
+        function openAnnouncement(type) {
+
+            const modal = document.getElementById("announcementModal");
+            const title = document.getElementById("announcementTitle");
+            const content = document.getElementById("announcementContent");
+
+            if (type === "community") {
+
+                title.textContent = "Community Announcements";
+
+                content.innerHTML = `
+                    <article class="activity-item">
+                        <h3>Barangay Cleanliness Reminder</h3>
+                        <p class="activity-category">Community Reminder</p>
+                        <p>
+                            Residents are encouraged to keep their
+                            surroundings clean and dispose of waste properly.
+                        </p>
+                    </article>
+
+                    <article class="activity-item">
+                        <h3>Community Health Reminder</h3>
+                        <p class="activity-category">Health Announcement</p>
+                        <p>
+                            Residents are encouraged to maintain healthy
+                            habits and participate in community health programs.
+                        </p>
+                    </article>
+                `;
+
+            } else if (type === "upcoming") {
+
+                title.textContent = "Upcoming Activities";
+
+                content.innerHTML = `
+                    <article class="activity-item">
+                        <h3>Community Clean-Up Drive</h3>
+                        <p class="activity-category">Upcoming Activity</p>
+                        <p><strong>Date:</strong> November 10, 2026</p>
+                        <p>
+                            Residents are invited to participate in
+                            cleaning public areas.
+                        </p>
+                    </article>
+
+                    <article class="activity-item">
+                        <h3>Community Health Program</h3>
+                        <p class="activity-category">Upcoming Activity</p>
+                        <p><strong>Date:</strong> November 15, 2026</p>
+                        <p>
+                            A community program promoting health
+                            awareness among residents.
+                        </p>
+                    </article>
+                `;
+
+            } else if (type === "notices") {
+
+                title.textContent = "Public Notices";
+
+                content.innerHTML = `
+                    <article class="activity-item">
+                        <h3>Barangay Office Schedule</h3>
+                        <p class="activity-category">Public Notice</p>
+                        <p>
+                            Residents may visit the barangay office
+                            during its regular operating hours.
+                        </p>
+                    </article>
+
+                    <article class="activity-item">
+                        <h3>Important Community Reminder</h3>
+                        <p class="activity-category">Public Notice</p>
+                        <p>
+                            Please follow barangay guidelines and
+                            cooperate with community programs.
+                        </p>
+                    </article>
+                `;
+
+            }
+
+            modal.showModal();
+        }
+
+        // Close Announcement Pop-up
+
+        function closeAnnouncement() {
+            document.getElementById("announcementModal").close();
+        }
+
+    </script>
+
+</body>
+</html>
