@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resident Management | BarangayConnect</title>
+    <title>Resident Management | Barangay 69</title>
 
     <style>
         * {
@@ -208,6 +208,15 @@
             color: white;
         }
 
+.delete-button {
+    background: #b42318;
+    color: white;
+}
+
+.delete-button:hover {
+    background: #912018;
+}
+
         .reject-button {
             background: #dc2626;
             color: white;
@@ -289,7 +298,7 @@
 <body>
     <header>
         <div class="header-content">
-            <div class="brand">BarangayConnect Admin</div>
+            <div class="brand">Barangay 69 Admin</div>
 
             <nav>
                 <a href="/admin-dashboard.html">Dashboard</a>
@@ -374,7 +383,7 @@
     </main>
 
     <footer>
-        &copy; 2026 BarangayConnect. Resident Management System.
+        &copy; 2026 Barangay 69. Resident Management System.
     </footer>
 
     <script>
@@ -482,27 +491,39 @@
                     const status = getStatus(resident);
                     const name = getFullName(resident) || "Unnamed Resident";
 
-                    let actions = `
-                        <span class="no-actions">No actions available</span>
-                    `;
+let actions = `
+    <span class="no-actions">No actions available</span>
+`;
 
-                    if (status === "pending") {
-                        actions = `
-                            <div class="action-buttons">
-                                <button
-                                    class="button approve-button"
-                                    data-id="${escapeHTML(id)}"
-                                    data-status="approved"
-                                >Approve</button>
+if (status === "pending") {
+    actions = `
+        <div class="action-buttons">
+            <button
+                class="button approve-button"
+                data-id="${escapeHTML(id)}"
+                data-status="approved"
+            >Approve</button>
 
-                                <button
-                                    class="button reject-button"
-                                    data-id="${escapeHTML(id)}"
-                                    data-status="rejected"
-                                >Reject</button>
-                            </div>
-                        `;
-                    }
+            <button
+                class="button reject-button"
+                data-id="${escapeHTML(id)}"
+                data-status="rejected"
+            >Reject</button>
+        </div>
+    `;
+}
+
+if (status === "approved" || status === "rejected") {
+    actions = `
+        <div class="action-buttons">
+            <button
+                class="button delete-button"
+                data-id="${escapeHTML(id)}"
+                data-action="delete"
+            >Delete</button>
+        </div>
+    `;
+}
 
                     const statusClass = [
                         "pending",
@@ -606,18 +627,55 @@
             }
         }
 
-        tableBody.addEventListener("click", event => {
-            const button = event.target.closest("button[data-id][data-status]");
+        async function deleteResident(id) {
+    const confirmed = confirm(
+        "Are you sure you want to permanently delete this resident? This cannot be undone."
+    );
 
-            if (!button) {
-                return;
+    if (!confirmed) return;
+
+    try {
+        const response = await fetch(
+            `${API_URL}/${encodeURIComponent(id)}`,
+            {
+                method: "DELETE",
+                credentials: "include"
             }
+        );
 
-            updateResidentStatus(
-                button.dataset.id,
-                button.dataset.status
-            );
-        });
+        const data = await response.json();
+
+        if (!response.ok || data.success === false) {
+            throw new Error(data.message || "Unable to delete resident.");
+        }
+
+        showMessage("Resident deleted successfully.", "success");
+        await loadResidents();
+
+    } catch (error) {
+        showMessage(error.message, "error");
+    }
+}
+
+        tableBody.addEventListener("click", event => {
+    const button = event.target.closest("button[data-id]");
+
+    if (!button) {
+        return;
+    }
+
+    if (button.dataset.action === "delete") {
+        deleteResident(button.dataset.id);
+        return;
+    }
+
+    if (button.dataset.status) {
+        updateResidentStatus(
+            button.dataset.id,
+            button.dataset.status
+        );
+    }
+});
 
         searchInput.addEventListener("input", renderResidents);
         statusFilter.addEventListener("change", renderResidents);

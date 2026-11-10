@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BarangayConnect | Community Services</title>
+    <title>Barangay 69 | Community Services</title>
 
     <style>
         * {
@@ -34,16 +34,44 @@
             flex-wrap: wrap;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin-left: 18px;
-        }
+.logo img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: white;
+}
+
+        .nav-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+    background: #176b45;
+    color: white;
+}
 
         nav a:hover {
             text-decoration: underline;
@@ -213,20 +241,36 @@
             header {
                 padding: 20px;
             }
-
             nav {
-                align-items: flex-start;
-            }
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+}
 
-            nav a {
-                margin-left: 0;
-                margin-right: 12px;
-            }
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+}
+
+.nav-links a {
+    display: block;
+    width: 100%;
+    padding: 12px 15px;
+    margin: 0;
+    background: #1b4c78;
+    border-radius: 8px;
+}
+
+.nav-links a:hover {
+    background: #176b45;
+}
 
             .hero {
                 padding: 40px 20px;
             }
-
+nav
             main {
                 padding: 35px 15px;
             }
@@ -244,24 +288,110 @@
                 padding: 20px;
             }
         }
+        /* HOME Dropdown Menu */
+.home-dropdown {
+    position: relative;
+}
+
+.home-dropdown-toggle {
+    background: #176b45;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.home-dropdown-toggle span {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 18px;
+    transition: transform 0.25s ease;
+}
+
+.home-dropdown-toggle.active span {
+    transform: rotate(180deg);
+}
+
+.home-dropdown-content {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 48px;
+    min-width: 190px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 18px #00000025;
+    overflow: hidden;
+    z-index: 100;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.25s ease,
+                transform 0.25s ease,
+                visibility 0.25s ease;
+}
+
+.home-dropdown-content.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.home-dropdown-content.show {
+    display: block;
+}
+
+.home-dropdown-content a {
+    display: block;
+    padding: 12px 16px;
+    color: #123c69;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.home-dropdown-content a:hover {
+    background: #e8f3ed;
+    color: #176b45;
+}
+
+@media (max-width: 600px) {
+    nav {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
     </style>
 </head>
 
 <body>
 
     <header>
-        <nav>
-            <div class="logo">BarangayConnect</div>
+       <nav>
+    <div class="logo">
+    <img src="/images/barangay-logo.png" alt="Barangay 69 Logo">
+    <span>Barangay 69</span>
+</div>
 
-            <div>
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#activities">Activities</a>
-                <a href="#announcements">Announcements</a>
-                <a href="#services">Services</a>
-                <a href="/register.html">Register</a>
-            </div>
-        </nav>
+    <div class="home-dropdown">
+        <button class="home-dropdown-toggle"
+                onclick="toggleHomeMenu()">
+            HOME <span>⌄</span>
+        </button>
+
+        <div class="home-dropdown-content" id="homeDropdown">
+            <a href="#about">About</a>
+            <a href="#activities">Activities</a>
+            <a href="#announcements">Announcements</a>
+            <a href="#services">Services</a>
+            <a href="/register.html">Register</a>
+        </div>
+    </div>
+</nav>
     </header>
 
     <!-- Home Section -->
@@ -416,7 +546,7 @@
 
             <p style="margin-top: 12px;">
                 Our goal is to keep residents informed and make barangay
-                services easier to access through BarangayConnect.
+                services easier to access through Barangay 69.
             </p>
         </section>
 
@@ -534,7 +664,7 @@
     </dialog>
 
     <footer>
-        <p>&copy; 2026 BarangayConnect | Community Services Portal</p>
+        <p>&copy; 2026 Barangay 69 | Community Services Portal</p>
     </footer>
 
     <script>
@@ -643,6 +773,14 @@
         function closeAnnouncement() {
             document.getElementById("announcementModal").close();
         }
+
+function toggleHomeMenu() {
+    const menu = document.getElementById("homeDropdown");
+    const button = document.querySelector(".home-dropdown-toggle");
+
+    menu.classList.toggle("show");
+    button.classList.toggle("active");
+}
 
     </script>
 

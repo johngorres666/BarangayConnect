@@ -793,6 +793,58 @@ app.patch(
     }
 });
 
+// Permanently delete a resident
+app.delete(
+    "/api/residents/:id",
+    requireAdmin,
+    async (req, res) => {
+        try {
+            const residentId = Number(req.params.id);
+
+            if (!Number.isSafeInteger(residentId) || residentId < 1) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Invalid resident ID."
+                });
+            }
+
+            const result = await pool.query(
+                `DELETE FROM residents
+                 WHERE resident_id = $1
+                 RETURNING resident_id`,
+                [residentId]
+            );
+
+            if (result.rowCount === 0) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Resident not found."
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: "Resident deleted successfully."
+            });
+
+        } catch (error) {
+            if (error.code === "23503") {
+                return res.status(409).json({
+                    success: false,
+                    message:
+                        "This resident cannot be deleted because they have existing service request records."
+                });
+            }
+
+            console.error("Resident deletion failed:", error.message);
+
+            return res.status(500).json({
+                success: false,
+                message: "Unable to delete resident."
+            });
+        }
+    }
+);
 
 app.get("/admin-dashboard.html", requireAdmin, (req, res) => {
     res.sendFile(
