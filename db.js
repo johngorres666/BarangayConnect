@@ -6,7 +6,6 @@ const { Pool } = require("pg");
 console.log("Database username being used:", process.env.DB_USER);
 
 const pool = new Pool({
-    console.log("Database username being used:", process.env.DB_USER);
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT || 5432),
     database: process.env.DB_NAME,
