@@ -1,6 +1,9 @@
+
 require("dotenv").config();
 
 const { Pool } = require("pg");
+
+console.log("Database username being used:", process.env.DB_USER);
 
 const pool = new Pool({
     host: process.env.DB_HOST,
